@@ -67,23 +67,4 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.handle("dialog:openFile", async () => {
-  const result = await dialog.showOpenDialog(win!, {
-    properties: ["openFile"],
-  });
-
-  if (result.canceled) {
-    return null;
-  }
-  return result.filePaths;
-});
-
-app.whenReady().then(() => {
-  createWindow();
-
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
-});
-
 app.whenReady().then(createWindow);
