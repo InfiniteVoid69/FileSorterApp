@@ -1,5 +1,6 @@
 import "./global.css";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import TestButton from "./components/testButton";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Panel defaultSize={25}>
           <div className="h-full p-4 rounded-lg border-2 border-blue-500 bg-zinc-900 text-white font-bold overflow-auto">
             Directories
+            <TestButton />
           </div>
         </Panel>
         <PanelResizeHandle className="w-[6px] bg-zinc-800 cursor-col-resize" />
