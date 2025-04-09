@@ -1,8 +1,6 @@
-import { app, BrowserWindow } from "electron";
-import { createRequire } from "node:module";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 process.env.APP_ROOT = path.join(__dirname, "..");
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
@@ -38,6 +36,18 @@ app.on("activate", () => {
   }
 });
 app.whenReady().then(createWindow);
+ipcMain.handle("dialog:openFile", async () => {
+  const result = await dialog.showOpenDialog(win, {
+    properties: ["openDirectory"]
+  });
+  if (result.canceled) {
+    return null;
+  }
+  return result;
+});
+ipcMain.on("log", (_event, message) => {
+  console.log("\x1B[36m", "Log:", message);
+});
 export {
   MAIN_DIST,
   RENDERER_DIST,
