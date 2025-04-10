@@ -2,6 +2,9 @@ import { app, BrowserWindow, ipcMain, dialog } from "electron";
 // import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import Store from "electron-store";
+
+const nutsack = new Store();
 
 // const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -70,6 +73,29 @@ ipcMain.handle("dialog:openFile", async () => {
 });
 
 //Terminal logging shit
-ipcMain.on("log", (_event, message) => {
+ipcMain.on("log", (_, message) => {
   console.log("\x1b[36m", "Log:", message);
+});
+
+// DataHandler shit
+//Might use this or might use sqlite3 or something else idk...
+ipcMain.handle("store:get", (_, key) => {
+  return nutsack.get(key, []);
+});
+
+ipcMain.handle("store:set", (_, key, value) => {
+  nutsack.set(key, value);
+});
+
+ipcMain.handle("store:delete", (_, key) => {
+  nutsack.delete(key);
+});
+
+ipcMain.handle("store:clear", () => {
+  nutsack.clear();
+  console.log("\x1b[36m", "Log:", "\x1b[31m", "Cleared all data from store");
+});
+
+ipcMain.handle("store:return", () => {
+  return nutsack.store;
 });
