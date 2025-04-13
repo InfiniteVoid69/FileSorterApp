@@ -1,36 +1,34 @@
-import "./global.css";
+import "@/global.css";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import TestButton from "./components/testButton";
+import {
+  SideBar,
+  FileDisplay,
+  DraggableTopBar,
+  TestButton,
+  SelectDirButton,
+  DirectoriesPreview,
+} from "@/components";
 
-function App() {
+export const App = () => {
   return (
-    <div className="h-screen">
-      <PanelGroup
-        autoSaveId="test"
-        direction="horizontal"
-        className="h-full"
-      >
-        <Panel defaultSize={25}>
-          <div className="h-full p-4 rounded-lg border-2 border-blue-500 bg-zinc-900 text-white font-bold overflow-auto">
-            Directories
-            <TestButton />
-          </div>
-        </Panel>
-        <PanelResizeHandle className="w-[6px] bg-zinc-800 cursor-col-resize" />
-        <Panel>
-          <div className="h-full p-4 rounded-lg border-2 border-blue-500 bg-zinc-900 text-white font-bold overflow-auto">
-            Files
-          </div>
-        </Panel>
-        <PanelResizeHandle className="w-[6px] bg-zinc-800 cursor-col-resize" />
-        <Panel defaultSize={25}>
-          <div className="h-full p-4 rounded-lg border-2 border-blue-500 bg-zinc-900 text-white font-bold overflow-auto">
-            Sorting Rules
-          </div>
-        </Panel>
-      </PanelGroup>
-    </div>
+    <>
+      <DraggableTopBar />
+      <div className="h-screen">
+        <PanelGroup autoSaveId="test" direction="horizontal">
+          <Panel defaultSize={25} minSize={15}>
+            <SideBar>
+              <DirectoriesPreview />
+              <SelectDirButton />
+            </SideBar>
+          </Panel>
+          <PanelResizeHandle className=" border-white/5 border hover:border-white/15" />
+          <Panel>
+            <FileDisplay>
+              <TestButton />
+            </FileDisplay>
+          </Panel>
+        </PanelGroup>
+      </div>
+    </>
   );
-}
-
-export default App;
+};
