@@ -15884,6 +15884,9 @@ ipcMain$1.handle("store:get", (_, key) => {
 });
 ipcMain$1.handle("store:set", (_, key, value) => {
   nutsack.set(key, value);
+  if (key === "savedFolders") {
+    win == null ? void 0 : win.webContents.send("store:updated", { key, value });
+  }
 });
 ipcMain$1.handle("store:delete", (_, key) => {
   nutsack.delete(key);
