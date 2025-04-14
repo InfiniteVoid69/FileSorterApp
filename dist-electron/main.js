@@ -9,10 +9,12 @@ var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read fr
 var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
 var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "write to private field"), setter ? setter.call(obj, value) : member.set(obj, value), value);
 var _validator, _encryptionKey, _options, _defaultValues;
-import electron, { app as app$1, BrowserWindow, ipcMain as ipcMain$1, dialog } from "electron";
+import electron, { app as app$1, BrowserWindow, ipcMain as ipcMain$1, dialog, nativeImage } from "electron";
 import { fileURLToPath } from "node:url";
-import path from "node:path";
+import fs$1 from "fs";
+import path$1 from "path";
 import process$1 from "node:process";
+import path from "node:path";
 import { promisify, isDeepStrictEqual } from "node:util";
 import fs from "node:fs";
 import crypto from "node:crypto";
@@ -15824,12 +15826,12 @@ class ElectronStore extends Conf {
   }
 }
 const nutsack = new ElectronStore();
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-process.env.APP_ROOT = path.join(__dirname, "..");
+const __dirname = path$1.dirname(fileURLToPath(import.meta.url));
+process.env.APP_ROOT = path$1.join(__dirname, "..");
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
-const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
-const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
+const MAIN_DIST = path$1.join(process.env.APP_ROOT, "dist-electron");
+const RENDERER_DIST = path$1.join(process.env.APP_ROOT, "dist");
+process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path$1.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
 let win;
 function createWindow() {
   win = new BrowserWindow({
@@ -15841,9 +15843,9 @@ function createWindow() {
     visualEffectState: "active",
     titleBarStyle: "hidden",
     trafficLightPosition: { x: 15, y: 10 },
-    icon: path.join(process.env.VITE_PUBLIC, "icon.png"),
+    icon: path$1.join(process.env.VITE_PUBLIC, "icon.png"),
     webPreferences: {
-      preload: path.join(__dirname, "preload.mjs")
+      preload: path$1.join(__dirname, "preload.mjs")
     }
   });
   win.webContents.on("did-finish-load", () => {
@@ -15852,7 +15854,7 @@ function createWindow() {
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);
   } else {
-    win.loadFile(path.join(RENDERER_DIST, "index.html"));
+    win.loadFile(path$1.join(RENDERER_DIST, "index.html"));
   }
 }
 app$1.on("window-all-closed", () => {
@@ -15878,6 +15880,26 @@ ipcMain$1.handle("dialog:openFile", async () => {
 });
 ipcMain$1.on("log", (_, message) => {
   console.log("\x1B[36m", "Log:", message);
+});
+ipcMain$1.handle("getFilesFromDir", async (_, dir) => {
+  try {
+    const files = fs$1.readdirSync(dir).map((file) => {
+      return path$1.join(dir, file);
+    });
+    return files;
+  } catch (err) {
+    console.error(`Error Reading Dir ${dir}`, err);
+    return [];
+  }
+});
+ipcMain$1.handle("getFileIcon", async (_, filePath) => {
+  try {
+    const icon = nativeImage.createFromPath(filePath);
+    return icon.toDataURL();
+  } catch (error) {
+    console.error(`Error fetching icon for file: ${filePath}`, error);
+    return null;
+  }
 });
 ipcMain$1.handle("store:get", (_, key) => {
   return nutsack.get(key, []);

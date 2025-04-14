@@ -5,8 +5,9 @@ import {
   FileDisplay,
   DraggableTopBar,
   TestButton,
-  SelectDirButton,
   DirectoriesPreview,
+  Content,
+  SettingsButton
 } from "@/components";
 
 export const App = () => {
@@ -18,12 +19,13 @@ export const App = () => {
           <Panel defaultSize={25} minSize={15}>
             <SideBar>
               <DirectoriesPreview />
-              <SelectDirButton />
+              <SettingsButton />
             </SideBar>
           </Panel>
           <PanelResizeHandle className=" border-white/5 border hover:border-white/15" />
           <Panel>
             <FileDisplay>
+              <Content />
               <TestButton />
             </FileDisplay>
           </Panel>

@@ -1,13 +1,17 @@
 import { SelectedFolders } from "@/handlers";
+import { SelectDirButton } from "./directoriesButton";
 
-export const DirectoriesPreview = () => {
+export const listedDirectories = () => {
   const { selectedFolders } = SelectedFolders();
   return (
     <div className="mt-4">
       Selected Directories
       <ul>
         {selectedFolders.map((folder, index) => (
-          <div className="px-2.5 py-3 hover:bg-zinc-500/75 transition-colors rounded-lg shadow-md" key={index}>
+          <div
+            className="px-2.5 py-3 hover:bg-zinc-500/75 transition-colors rounded-lg shadow-md"
+            key={index}
+          >
             <li key={index} className="flex items-center">
               {folder}
               <button
@@ -29,6 +33,7 @@ export const DirectoriesPreview = () => {
           </div>
         ))}
       </ul>
+      <SelectDirButton />
     </div>
   );
 };

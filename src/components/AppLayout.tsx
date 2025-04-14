@@ -19,7 +19,6 @@ export const SideBar = ({children}: Props ) => {
 export const FileDisplay = ({children}: Props ) => {
   return (
     <div className="h-full p-2 bg-zinc-800 text-white overflow-auto">
-      FileDisplay
       {children}
     </div>
   );

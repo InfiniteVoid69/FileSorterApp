@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain, dialog } from "electron";
+import { app, BrowserWindow, ipcMain, dialog, nativeImage } from "electron";
 // import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
-import path from "node:path";
+import fs from "fs";
+import path from "path";
 import Store from "electron-store";
 
 const nutsack = new Store();
@@ -69,6 +70,10 @@ app.on("activate", () => {
 app.whenReady().then(createWindow);
 
 // Handle IPC events
+
+
+
+// File selection thingy
 ipcMain.handle("dialog:openFile", async () => {
   const result = await dialog.showOpenDialog(win!, {
     properties: ["openDirectory"],
@@ -85,8 +90,34 @@ ipcMain.on("log", (_, message) => {
   console.log("\x1b[36m", "Log:", message);
 });
 
+// Getting Files from dir list
+ipcMain.handle("getFilesFromDir", async (_, dir) => {
+  try {
+    const files = fs.readdirSync(dir).map((file) => {
+      //If file is a directory, return dir
+      return path.join(dir, file);
+    });
+    return files;
+  }
+  catch (err) { 
+    console.error(`Error Reading Dir ${dir}`, err);
+    return [];
+  }
+});
+
+//Getting Icon
+ipcMain.handle("getFileIcon", async (_, filePath) => {
+  try {
+    const icon = nativeImage.createFromPath(filePath);
+    return icon.toDataURL();
+  } catch (error) {
+    console.error(`Error fetching icon for file: ${filePath}`, error);
+    return null;
+  }
+});
+
 // DataHandler shit
-//Might use this or might use sqlite3 or something else idk...
+// Might use this or might use sqlite3 or something else idk...
 ipcMain.handle("store:get", (_, key) => {
   return nutsack.get(key, []);
 });
