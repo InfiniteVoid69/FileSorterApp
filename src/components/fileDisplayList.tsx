@@ -27,14 +27,14 @@ export const FileDisplayList = () => {
             dirFiles
               .filter((filePath) => !filePath.endsWith(".DS_Store"))
               .map(async (filePath) => {
-                const icon = await window.ipcRenderer.invoke(
-                  "getFileIcon",
-                  filePath
-                );
+                // const icon = await window.ipcRenderer.invoke(
+                //   "getFileIcon",
+                //   filePath
+                // );
                 return {
                   name: filePath.split("/").pop() || filePath,
                   path: filePath,
-                  icon,
+                //   icon,
                 };
               })
           );

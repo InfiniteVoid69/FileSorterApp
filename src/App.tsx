@@ -5,10 +5,13 @@ import {
   FileDisplay,
   DraggableTopBar,
   TestButton,
-  DirectoriesPreview,
+  ListedDirectories,
   Content,
-  SettingsButton
+  SettingsButton,
+  FileViewButton
 } from "@/components";
+import { FolderViewButton } from "./components/buttons/dirViewButton copy";
+import { RuleViewButton } from "./components/buttons/ruleViewButton";
 
 export const App = () => {
   return (
@@ -18,7 +21,9 @@ export const App = () => {
         <PanelGroup autoSaveId="test" direction="horizontal">
           <Panel defaultSize={25} minSize={15}>
             <SideBar>
-              <DirectoriesPreview />
+              <FileViewButton />
+              <FolderViewButton />
+              <RuleViewButton  />
               <SettingsButton />
             </SideBar>
           </Panel>
@@ -26,6 +31,7 @@ export const App = () => {
           <Panel>
             <FileDisplay>
               <Content />
+              <ListedDirectories />
               <TestButton />
             </FileDisplay>
           </Panel>

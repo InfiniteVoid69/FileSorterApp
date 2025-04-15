@@ -1,7 +1,7 @@
 import { SelectedFolders } from "@/handlers";
-import { SelectDirButton } from "./directoriesButton";
+import { SelectDirButton } from "./buttons/directoriesButton";
 
-export const listedDirectories = () => {
+export const ListedDirectories = () => {
   const { selectedFolders } = SelectedFolders();
   return (
     <div className="mt-4">
