@@ -124,7 +124,6 @@ ipcMain.handle("store:get", (_, key) => {
 
 ipcMain.handle("store:set", (_, key, value) => {
   nutsack.set(key, value);
-
    if (key === "savedFolders") {
     win?.webContents.send("store:updated", { key, value });
   }

@@ -1,7 +1,13 @@
-import { FileDisplayList } from "./fileDisplayList"
+import { FileDisplayList, ListedDirectories } from "@/components";
+import { HandlePageState } from "@/handlers";
 
 export const Content = () => {
-    return (
-        <FileDisplayList />
-    )
-}
+  const { page } = HandlePageState();
+
+  return (
+    <>
+      {page === 'files' && <FileDisplayList />}
+      {page === 'dirs' && <ListedDirectories />}
+    </>
+  );
+};

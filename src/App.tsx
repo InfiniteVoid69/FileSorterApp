@@ -5,13 +5,12 @@ import {
   FileDisplay,
   DraggableTopBar,
   TestButton,
-  ListedDirectories,
   Content,
   SettingsButton,
   FileViewButton
 } from "@/components";
-import { FolderViewButton } from "./components/buttons/dirViewButton copy";
-import { RuleViewButton } from "./components/buttons/ruleViewButton";
+import { FolderViewButton } from "./components/buttons/contentChangeButtons/dirViewButton";
+import { RuleViewButton } from "./components/buttons/contentChangeButtons/ruleViewButton";
 
 export const App = () => {
   return (
@@ -31,7 +30,6 @@ export const App = () => {
           <Panel>
             <FileDisplay>
               <Content />
-              <ListedDirectories />
               <TestButton />
             </FileDisplay>
           </Panel>
