@@ -1,5 +1,5 @@
 import { SelectedFolders } from "@/handlers";
-import { SelectDirButton } from "./buttons/directoriesButton";
+import { SelectDirButton } from "../buttons/dirAddButton";
 
 export const ListedDirectories = () => {
   const { selectedFolders } = SelectedFolders();
