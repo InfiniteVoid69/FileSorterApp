@@ -5,6 +5,7 @@ export const HandlePageState = () => {
 
   const setPageState = (newPage: string) => {
     setPage(newPage);
+    console.log("Navigating to:", newPage); // dumb debug
     window.ipcRenderer.send("log", {
       message: "Navigating to: " + newPage,
     });
